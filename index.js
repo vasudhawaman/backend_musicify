@@ -6,7 +6,6 @@ const User = require('./models/User')
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
 const verifyToken = require('./middleware/verifyToken');
-const setToken = require('./middleware/setToken');
 const passport = require('passport');
 const session = require('express-session')
 const env = require('dotenv')
