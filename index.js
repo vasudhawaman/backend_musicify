@@ -35,7 +35,7 @@ app.use(passport.session());
           origin:
                 process.env.NODE_ENV === "production"
                     ? process.env.FRONTEND
-                    : "http://localhost:3000",
+                    : "https://musicify-frontend.vercel.app",
       }
  ));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,11 +47,14 @@ app.use('/like',require('./routes/like'));
 app.use('/view',require('./routes/view'));
 app.use('/radio',require('./routes/radio'));
 app.use('/recommend',require('./routes/recommend'));
-
+const port = process.env.PORT || 8000;
 app.get('/createToken/:token' ,(req,res)=>{
      console.log(req.params.token)
      res.cookie('token_musify',String(req.params.token),{
           maxAge:24*60*60*7*1000*3,
+          sameSite:"none",
+          secure:"true",
+          domain:"backend-musicify.onrender.com"
       }).send({message:"success"})
 })
 app.post('/upload', verifyToken, async (req, res) => {
@@ -81,15 +84,18 @@ app.get('/auth/google',
      passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/auth/google/callback',
-     passport.authenticate('google', { failureRedirect: 'http://localhost:3000' }),
+     passport.authenticate('google', { failureRedirect: 'https://musicify-frontend.vercel.app/' }),
      (req, res) => {
           const {authToken}=req.user;
           console.log(req.user);
           res.cookie('token_musify',String(authToken),{
                maxAge:24*60*60*7*1000*3,
+               sameSite:"none",
+              secure:"true",
+              domain:"backend-musicify.onrender.com"
            })
-           res.redirect(`http://localhost:3000/home`);
+           res.redirect(`https://musicify-frontend.vercel.app/`);
      });
-app.listen(8000, () => {
+app.listen(port, () => {
      console.log("Listening on port 8000");
 });
