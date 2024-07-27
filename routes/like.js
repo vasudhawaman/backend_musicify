@@ -9,7 +9,6 @@ const Like= require('../models/Like');
 const router = express.Router();
 router.post('/add',verifyToken,async(req,res)=>{
       const {song } =req.body;
-      console.log(req.body)
      try{
          const newLike = new Like({
          song:song,
@@ -25,10 +24,8 @@ router.post('/add',verifyToken,async(req,res)=>{
 });
 router.post('/check',verifyToken,async(req,res)=>{
     const {song } =req.body;
-    console.log(song)
    try{ 
     const isLiked = await Like.find({user_id:req.id,song:song});
-    console.log(isLiked)
     if(isLiked.length >0) return res.status(200).json({message:"true"})
     else return res.status(400).json({message:"Not liked"})
   }catch(err){
