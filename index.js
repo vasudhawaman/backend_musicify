@@ -22,9 +22,9 @@ app.use(session({
      resave: false,
      saveUninitialized: true,
      cookie: {
-          secure: false,
+          secure:true,
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          httpOnly: true
+          domain:"backend-musicify.onrender.com"
      }
 }));
 app.use(passport.initialize());
